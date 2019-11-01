@@ -30,7 +30,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         try:
             education = EducationInformation.objects.filter(user=obj).order_by('-degree_completed_date').first()
-            print(education)
             return model_to_dict(education)
         except AttributeError as e:
             education = dict()
