@@ -16,6 +16,21 @@ class EducationInformation(models.Model):
     degree_started_date = models.DateField()
     degree_completed_date = models.DateField()
     cgpa = models.FloatField()
+    is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.degree_name
+
+
+class Degree(models.Model):
+    username = models.CharField(max_length=255)
+    degree_name = models.CharField(max_length=255)
+    cgpa = models.FloatField()
+
+    def __str__(self):
+        return self.degree_name
+
+
 
 
 
