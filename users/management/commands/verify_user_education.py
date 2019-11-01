@@ -31,15 +31,16 @@ class Command(BaseCommand):
                         degree_ids.append(user_education_info.id)
 
         elif user_id:
-
-                user = User.objects.prefetch_related('educations').get(id=user_id)
-                if user:
+                try:
+                    user = User.objects.prefetch_related('educations').get(id=user_id)
                     user_education_info = user.educations.order_by('-degree_completed_date').first()
                     if user_education_info:
                         context = UserEducationInformationSerializer(user_education_info).data
                         response = self.verify_degree_api(user.username, **context).json()
                         if len(response):
                             degree_ids.append(user_education_info.id)
+                except ObjectDoesNotExist as e:
+                    self.stdout.write("Invalid id, please enter valid user id.")
 
         if len(degree_ids):
             EducationInformation.objects.filter(pk__in=degree_ids).update(is_verified =True)
