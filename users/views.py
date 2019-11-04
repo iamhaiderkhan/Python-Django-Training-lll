@@ -19,17 +19,13 @@ class UserEducationInfoViewSet(viewsets.ModelViewSet):
     serializer_class = UserEducationInformationSerializer
 
 
-
-
-
-
-class DegreeVerifyViewSet(viewsets.ModelViewSet):
+class DegreeVerifyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Degree.objects.all()
     serializer_class = DegreeSerializer
 
     def get_queryset(self):
-        queryset = Degree.objects.all()
+        queryset = self.queryset
         query_params = self.request.query_params
         if query_params:
-            queryset = Degree.objects.filter(username=query_params['username'],degree_name=query_params['degree_name'],cgpa=query_params['cgpa'])
+            queryset = Degree.objects.filter(username=query_params.get('username'),degree_name=query_params.get('degree_name'),cgpa=query_params.get('cgpa'))
         return queryset
